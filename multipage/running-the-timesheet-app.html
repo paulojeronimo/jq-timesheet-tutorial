@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.12">
+<meta name="author" content="Paulo Jerônimo &lt;pj@paulojeronimo.com&gt;, 2021-04-23 15:25:27 -0300">
+<title>Learning jq through a timesheet app</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<link rel="stylesheet" href="./asciidoctor.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>.toc-current{font-weight: bold;} .toc-root{font-family: "Open Sans","DejaVu Sans",sans-serif;
+                       font-size: 0.9em;} #content{display: flex; flex-direction: column; flex: 1 1 auto;}
+             .nav-footer{text-align: center; margin-top: auto;}
+             .nav-footer > p > a {white-space: nowrap;}</style>
+</head>
+<body id="running-the-timesheet-app" class="book toc2 toc-left">
+<div id="header">
+<h1>Learning jq through a timesheet app</h1>
+<div class="details">
+<span id="author" class="author">Paulo Jerônimo &lt;pj@paulojeronimo.com&gt;, 2021-04-23 15:25:27 -0300</span><br>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<p><span class="toc-root"><a href="index.html">Learning jq through a timesheet app</a></span></p><ul class="sectlevel0">
+<li><a href="running-the-timesheet-app.html"><span class="toc-current">Running the timesheet app</span></a>
+</li>
+<li><a href="jq-step-by-step.html">jq step by step</a>
+</li>
+<li><a href="references.html">References</a>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<h1 id="running-the-timesheet-app" class="sect0">Running the timesheet app</h1>
+<div class="openblock partintro">
+<div class="content">
+<div class="paragraph">
+<p>Cloning the git repository:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>git clone https://github.com/paulojeronimo/timesheet</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Change into the app directory:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>cd `basename $_`</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Execute the app:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>./jq-timesheet.sh</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The output of the command above will be a set of JSON generated files.
+These files will be available in the directory <code>jsons</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>tree jsons</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="ulist">
+<ul>
+</ul>
+</div>
+<div class="paragraph nav-footer">
+<p>↑ Up: <a href="index.html">Learning jq through a timesheet app</a> | Next: <a href="jq-step-by-step.html">jq step by step</a> →</p>
+</div>
+</div>
+</body>
+</html>

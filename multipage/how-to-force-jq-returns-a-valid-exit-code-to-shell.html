@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.12">
+<meta name="author" content="Paulo Jerônimo &lt;pj@paulojeronimo.com&gt;, 2021-04-23 15:25:27 -0300">
+<title>Learning jq through a timesheet app</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<link rel="stylesheet" href="./asciidoctor.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>.toc-current{font-weight: bold;} .toc-root{font-family: "Open Sans","DejaVu Sans",sans-serif;
+                       font-size: 0.9em;} #content{display: flex; flex-direction: column; flex: 1 1 auto;}
+             .nav-footer{text-align: center; margin-top: auto;}
+             .nav-footer > p > a {white-space: nowrap;}</style>
+</head>
+<body id="how-to-force-jq-returns-a-valid-exit-code-to-shell" class="book toc2 toc-left">
+<div id="header">
+<h1>Learning jq through a timesheet app</h1>
+<div class="details">
+<span id="author" class="author">Paulo Jerônimo &lt;pj@paulojeronimo.com&gt;, 2021-04-23 15:25:27 -0300</span><br>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<p><span class="toc-root"><a href="index.html">Learning jq through a timesheet app</a></span></p><ul class="sectlevel0">
+<li><a href="running-the-timesheet-app.html">Running the timesheet app</a>
+</li>
+<li><a href="jq-step-by-step.html">jq step by step</a>
+<ul class="sectlevel1">
+<li><a href="generate-some-json-files-from-yaml-files.html">Generate some JSON files from YAML files</a>
+</li>
+<li><a href="how-to-pretty-print-the-data-files-in-yaml-format-and-the-generated-json-files.html">How to pretty-print the data (files in YAML format) and the generated JSON files?</a>
+</li>
+<li><a href="see-the-timesheet-for-the-week-07-in-2021.html">See the timesheet for the week 07 in 2021</a>
+</li>
+<li><a href="in-which-weekdays-do-we-have-an-entry-for-the-week-2021-07.html">In which weekdays do we have an entry for the week 2021-07?</a>
+</li>
+<li><a href="do-we-have-an-entry-for.html">Do we have an entry for &#8230;&#8203;</a>
+</li>
+<li><a href="how-to-force-jq-returns-a-valid-exit-code-to-shell.html"><span class="toc-current">How to force jq returns a valid exit code to shell?</span></a>
+</li>
+<li><a href="can-we-see-the-entries-for-monday-and-for-wednesday.html">Can we see the entries for Monday and for Wednesday?</a>
+</li>
+<li><a href="how-can-i-see-the-startend-times-for-monday.html">How can I see the start/end times for Monday?</a>
+</li>
+<li><a href="but-we-can-have-more-than-one-startend-time-for-the-same-day-is-this-right.html">But we can have more than one start/end time for the same day. Is this right?</a>
+</li>
+<li><a href="how-to-convert-a-string-that-represents-a-time-in-order-to-use-it-in-time-calculations.html">How to convert a string that represents a time in order to use it in time calculations?</a>
+</li>
+<li><a href="can-we-pass-a-time-string-to-jq.html">Can we pass a "time string" to jq?</a>
+</li>
+<li><a href="something-gets-wrong.html">Something gets wrong &#8230;&#8203;</a>
+</li>
+<li><a href="parsing-a-datetime-converting-it-from-a-string.html">Parsing a date/time (converting it from a string)</a>
+</li>
+<li><a href="converting-a-datetime-to-a-string.html">Converting a date/time to a string</a>
+</li>
+<li><a href="how-to-calculate-a-duration-the-time-between-startend-times.html">How to calculate a duration (the time between start/end times)?</a>
+</li>
+<li><a href="how-to-create-a-jq-library.html">How to create a jq library?</a>
+</li>
+<li><a href="how-to-use-a-jq-library.html">How to use a jq library?</a>
+</li>
+<li><a href="how-to-convert-year-weeknumber-dayofweek-to-date.html">How to convert "Year-WeekNumber.DayOfWeek" to date?</a>
+</li>
+</ul>
+</li>
+<li><a href="references.html">References</a>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="how-to-force-jq-returns-a-valid-exit-code-to-shell">How to force jq returns a valid exit code to shell?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Observe this result:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>jq -c '.timesheet.monday' jsons/2021-07.json &amp;&amp; echo 'Yes, we have an entry on Monday!'</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is ok &#8230;&#8203; but the following ouput is not what we expect to see:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>jq -c '.timesheet.saturday' jsons/2021-07.json &amp;&amp; echo 'Yes, we have an entry on Saturday!'</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So, we can force <code>jq</code> exits with an error code in case we have a <code>null</code> result:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>jq -ce '.timesheet.saturday' jsons/2021-07.json || echo 'Ok, we do not have an entry on Saturday!'</pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Observe the use of the argument <code>-e</code>.</p>
+</li>
+</ol>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="paragraph nav-footer">
+<p>← Previous: <a href="do-we-have-an-entry-for.html">Do we have an entry for &#8230;&#8203;</a> | ↑ Up: <a href="jq-step-by-step.html">jq step by step</a> | ⌂ Home: <a href="index.html">Learning jq through a timesheet app</a> | Next: <a href="can-we-see-the-entries-for-monday-and-for-wednesday.html">Can we see the entries for Monday and for Wednesday?</a> →</p>
+</div>
+</div>
+</body>
+</html>
